@@ -1,255 +1,473 @@
-# Church Mate - React Native Mobile App
+# Church Mate - Modern Church Companion App
 
-# Church Mate - Mobile Companion App
+<div align="center">
 
-A comprehensive offline-first mobile application for church members, built with React Native and Expo.
+![Church Mate](https://img.shields.io/badge/Platform-React%20Native-blue)
+![Expo SDK](https://img.shields.io/badge/Expo-SDK%2054-000020?logo=expo)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178C6?logo=typescript)
+![Firebase](https://img.shields.io/badge/Firebase-Firestore-FFCA28?logo=firebase)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-## 🎯 Overview
+**A comprehensive offline-first mobile application designed to enhance the spiritual life of church members**
 
-Church Mate is a feature-rich mobile application designed to enhance the spiritual life of church members by providing easy access to:
-- **Multi-language Bible** (Myanmar & Hakha Chin)
-- **Hymn Collection** with search functionality
-- **Church Bulletins** and announcements
-- **User Profiles** with authentication
-- **Admin Dashboard** for church management
-- **Dark Mode** support for comfortable reading
+[Features](#-features) • [Installation](#-installation) • [Tech Stack](#-tech-stack) • [Screenshots](#-screenshots) • [Contributing](#-contributing)
 
-## ✨ Key Features
+</div>
 
-### 📖 Bible Module
-- **Dual Language Support**: Myanmar and Hakha Chin translations
-- **Offline Access**: Full Bible stored locally in SQLite
-- **Search Functionality**: Find verses by keyword with highlighting
-- **Bookmarks**: Save and manage favorite verses
-- **Chapter Navigation**: Easy book and chapter selection
-- **Verse Highlighting**: Visual emphasis on search results
+---
+
+## 📖 About
+
+Church Mate is a feature-rich React Native mobile application built specifically for Myanmar churches. It provides seamless access to spiritual resources including a multi-language Bible, hymn collection, church bulletins, and administrative tools—all with robust offline support and modern dark mode interface.
+
+### 🎯 Key Highlights
+
+- **100% Offline-First**: Full Bible and hymns accessible without internet
+- **Multi-Language Support**: Myanmar and Hakha Chin translations
+- **Modern UI/UX**: Beautiful dark mode with smooth transitions
+- **Admin Dashboard**: Complete church management system
+- **Real-time Sync**: Firebase-powered cloud synchronization
+- **Cross-Platform**: iOS, Android, and Web support
+
+---
+
+## ✨ Features
+
+### 📚 Bible Module
+
+<table>
+<tr>
+<td width="50%">
+
+**Core Features**
+- Dual language support (Myanmar & Hakha Chin)
+- 66 books with full chapter navigation
+- 30,000+ verses stored locally in SQLite
+- Instant offline access with zero latency
+
+</td>
+<td width="50%">
+
+**Advanced Features**
+- Full-text search with keyword highlighting
+- Bookmark management with notes
+- Verse-level highlighting in search results
+- Direct navigation from search to chapter
+
+</td>
+</tr>
+</table>
 
 ### 🎵 Hymn Collection
-- **Searchable Database**: Find hymns by title or number
-- **Offline Storage**: Access hymns without internet
-- **Firebase Sync**: Cloud backup and sync across devices
-- **Admin Management**: Add and edit hymns through admin panel
+
+- **Searchable Database**: Find hymns by title, number, or lyrics
+- **Offline Storage**: Access complete hymn library without internet
+- **Firebase Sync**: Cloud backup across devices
+- **Admin Management**: Add, edit, and organize hymns
 
 ### 📰 Bulletin Board
-- **Church Announcements**: Stay updated with church news
-- **Categorized Posts**: Events, prayers, announcements
-- **Priority Levels**: Important notices highlighted
-- **Real-time Updates**: Instant notifications of new bulletins
 
-### 👤 User Management
-- **Firebase Authentication**: Secure email/password login
-- **User Profiles**: Manage personal information
-- **Role-Based Access**: Admin and regular user permissions
-- **Profile Pictures**: Personalize your account
+- **Real-time Announcements**: Church news and events
+- **Smart Categorization**: Events, prayers, announcements, general
+- **Priority System**: High/medium/low importance levels
+- **Rich Content**: Support for formatted text and dates
+
+### 👥 User Management & Authentication
+
+- **Secure Login**: Firebase email/password authentication
+- **User Profiles**: Customizable member profiles
+- **Role-Based Access**: Admin and member permissions
+- **Profile Management**: Update personal information and settings
 
 ### 🎨 Dark Mode
+
 - **3 Theme Modes**: Light, Dark, and System auto-detect
-- **Persistent Preference**: Remembers your choice
-- **Complete Coverage**: All screens support dark mode
-- **Smooth Transitions**: Instant theme switching
+- **Persistent Preference**: Remembers user choice via AsyncStorage
+- **Complete Coverage**: All screens and components themed
+- **Smooth Transitions**: Instant theme switching without reload
 
-## 🛠️ Tech Stack
+### 🔧 Admin Dashboard
 
-- **Framework**: React Native (Expo SDK 54)
-- **Language**: TypeScript
-- **Database**: 
-  - SQLite (`expo-sqlite`) for offline Bible data
-  - Firebase Firestore for hymns and bulletins
-- **Navigation**: React Navigation (Bottom Tabs)
+- **User Management**: View, promote, and manage church members
+- **Content Management**: Add/edit hymns and bulletins
+- **Church Settings**: Customize church name and theme colors
+- **Activity Logs**: Track administrative actions
+- **Quick Actions**: Streamlined access to common tasks
 
-## 📋 Prerequisites
+---
 
-- Node.js (v16 or higher)
-- npm or yarn
-- Expo CLI
-- (Optional) Android Studio or Xcode for native builds
+## 🛠 Tech Stack
 
-## 🔧 Installation
+### Frontend
+- **Framework**: React Native with Expo SDK 54
+- **Language**: TypeScript 5.3
+- **Navigation**: React Navigation v6 (Bottom Tabs + Stack)
+- **State Management**: React Context API
+- **UI Components**: Custom components with theme system
 
-1. **Clone or navigate to the project**:
-   ```bash
-   cd church-mate
-   ```
+### Backend & Database
+- **Cloud Database**: Firebase Firestore
+- **Authentication**: Firebase Auth
+- **Local Database**: SQLite (expo-sqlite)
+- **Storage**: AsyncStorage for preferences
 
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+### Development Tools
+- **Build Tool**: Expo CLI
+- **Version Control**: Git & GitHub
+- **Code Quality**: TypeScript strict mode
+- **Package Manager**: npm
 
-3. **Configure Firebase**:
-   - Create a Firebase project at [https://console.firebase.google.com](https://console.firebase.google.com)
-   - Enable Firestore Database
-   - Copy your Firebase config
-   - Update `src/config/firebase.ts` with your credentials
+---
 
-4. **Prepare Bible Data** (Optional):
-   - Place your `Hakha Bible_(HCL).xml` file in the project root
-   - Run the XML parser script (see below)
-   - Or use the sample data that's included
+## 🚀 Installation
 
-## 🏃 Running the App
-
-### Development Mode
+### Prerequisites
 
 ```bash
-# Start Expo development server
+Node.js >= 16.0.0
+npm >= 8.0.0
+Expo CLI (installed globally)
+```
+
+### Quick Start
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/Joseph1997-eng/churchmateV2.git
+cd churchmateV2
+```
+
+2. **Install dependencies**
+```bash
+npm install
+```
+
+3. **Configure Firebase**
+   - Create a Firebase project at [Firebase Console](https://console.firebase.google.com)
+   - Enable Authentication (Email/Password)
+   - Enable Firestore Database
+   - Copy your Firebase config
+   - Update `src/config/firebase.ts`:
+
+```typescript
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+```
+
+4. **Start development server**
+```bash
 npx expo start
-
-# Run on Android
-npx expo run:android
-
-# Run on iOS (macOS only)
-npx expo run:ios
-
-# Run on Web
-npx expo start --web
 ```
 
-### Using Expo Go App
+5. **Run on device**
+   - Scan QR code with Expo Go app (iOS/Android)
+   - Or press `a` for Android emulator
+   - Or press `i` for iOS simulator (macOS only)
 
-1. Install Expo Go on your mobile device
-2. Run `npx expo start`
-3. Scan the QR code with your device
+---
 
-## 📚 Bible Data Setup
+## 📱 Usage
 
-### Using Your XML File
+### First Launch
 
-1. Place `Hakha Bible_(HCL).xml` in the project root
-2. Run the parser script:
-   ```bash
-   npm run parse-bible
-   ```
+1. **Bible Import**: On first launch, the app automatically imports Bible data
+2. **Create Account**: Sign up with email and password
+3. **Explore Features**: Navigate through Bible, Hymns, and Bulletins
 
-### XML Structure Expected
+### Admin Setup
 
-```xml
-<bible>
-  <b n="Genesis">
-    <c n="1">
-      <v n="1">In the beginning...</v>
-      <v n="2">And the earth was...</v>
-    </c>
-  </b>
-</bible>
+To create an admin account:
+
+1. Sign up normally through the app
+2. Access Firestore Console
+3. Find your user document in `users` collection
+4. Set `role: 'admin'`
+5. Restart the app to see Admin tab
+
+---
+
+## 📂 Project Structure
+
+```
+church-mate/
+├── src/
+│   ├── components/          # Reusable UI components
+│   │   ├── BibleReader.tsx
+│   │   ├── HymnList.tsx
+│   │   ├── BulletinBoard.tsx
+│   │   └── ErrorBoundary.tsx
+│   ├── screens/             # Screen components
+│   │   ├── auth/           # Authentication screens
+│   │   ├── bible/          # Bible-related screens
+│   │   └── admin/          # Admin screens
+│   ├── navigation/          # Navigation configuration
+│   │   ├── BottomTabNavigator.tsx
+│   │   ├── BibleNavigator.tsx
+│   │   └── AdminNavigator.tsx
+│   ├── contexts/            # React Context providers
+│   │   ├── AuthContext.tsx
+│   │   └── ThemeContext.tsx
+│   ├── database/            # SQLite database layer
+│   │   ├── BibleDatabase.ts
+│   │   └── schema.ts
+│   ├── services/            # Firebase services
+│   │   ├── AuthService.ts
+│   │   ├── HymnService.ts
+│   │   ├── BulletinService.ts
+│   │   └── BookmarkService.ts
+│   ├── utils/               # Utility functions
+│   │   ├── xmlParser.ts
+│   │   └── bibleParser.ts
+│   ├── types/               # TypeScript definitions
+│   │   └── index.ts
+│   ├── styles/              # Theme and styling
+│   │   └── theme.ts
+│   └── config/              # App configuration
+│       └── firebase.ts
+├── assets/                  # Static assets
+├── App.tsx                  # Root component
+├── app.json                 # Expo configuration
+└── package.json
 ```
 
-## 🔥 Firebase Setup
+---
+
+## 🎨 Customization
+
+### Theme Colors
+
+Edit `src/styles/theme.ts`:
+
+```typescript
+export const theme = {
+  colors: {
+    primary: '#4A90E2',      // Your church's primary color
+    secondary: '#7B68EE',    // Secondary accent color
+    // ... more colors
+  }
+};
+```
+
+### Church Settings
+
+Admins can customize:
+- Church name
+- Primary and secondary colors
+- Logo and icon (coming soon)
+
+---
+
+## 🔐 Firebase Setup
 
 ### Firestore Collections
 
-#### Hymns Collection (`hymns`)
+#### `users`
 ```javascript
 {
+  id: "user_id",
+  email: "user@example.com",
+  name: "John Doe",
+  role: "user" | "admin",
+  createdAt: Timestamp,
+  photoURL: "optional_url"
+}
+```
+
+#### `hymns`
+```javascript
+{
+  id: "hymn_id",
   number: 1,
   title: "Amazing Grace",
-  lyrics: "Amazing grace, how sweet the sound...",
-  category: "Praise"
+  lyrics: "Full hymn lyrics...",
+  category: "Praise",
+  createdAt: Timestamp
 }
 ```
 
-#### Bulletins Collection (`bulletins`)
+#### `bulletins`
 ```javascript
 {
+  id: "bulletin_id",
   title: "Sunday Service",
-  description: "Join us for worship at 10 AM",
+  description: "Join us for worship...",
+  category: "announcement" | "event" | "prayer" | "general",
+  priority: "high" | "medium" | "low",
   date: Timestamp,
-  category: "announcement", // or "event", "prayer", "general"
-  priority: "high" // or "medium", "low"
+  createdAt: Timestamp,
+  createdBy: "user_id"
 }
 ```
 
-### Firestore Rules (Development)
+#### `bookmarks`
+```javascript
+{
+  id: "bookmark_id",
+  userId: "user_id",
+  bookId: 1000,
+  bookName: "Genesis",
+  chapter: 1,
+  verse: 1,
+  text: "In the beginning...",
+  note: "Optional note",
+  createdAt: Timestamp
+}
+```
+
+### Security Rules
 
 ```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
+    // Users can read their own data
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth.uid == userId;
+    }
+    
+    // Everyone can read hymns and bulletins
+    match /hymns/{hymnId} {
       allow read: if true;
-      allow write: if false; // Only admins can write
+      allow write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    match /bulletins/{bulletinId} {
+      allow read: if true;
+      allow write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Users can manage their own bookmarks
+    match /bookmarks/{bookmarkId} {
+      allow read, write: if request.auth.uid == resource.data.userId;
     }
   }
 }
 ```
 
-## 📁 Project Structure
-
-```
-church-mate/
-├── src/
-│   ├── components/       # Reusable UI components
-│   │   ├── BibleReader.tsx
-│   │   ├── HymnList.tsx
-│   │   └── BulletinBoard.tsx
-│   ├── screens/          # Screen components
-│   │   ├── BibleScreen.tsx
-│   │   ├── HymnScreen.tsx
-│   │   └── BulletinScreen.tsx
-│   ├── navigation/       # Navigation configuration
-│   │   └── BottomTabNavigator.tsx
-│   ├── database/         # SQLite database layer
-│   │   ├── schema.ts
-│   │   └── BibleDatabase.ts
-│   ├── services/         # Firebase services
-│   │   ├── HymnService.ts
-│   │   └── BulletinService.ts
-│   ├── config/           # App configuration
-│   │   └── firebase.ts
-│   ├── utils/            # Utility functions
-│   │   ├── xmlParser.ts
-│   │   └── firstLaunch.ts
-│   ├── types/            # TypeScript interfaces
-│   │   └── index.ts
-│   └── styles/           # Theme and styling
-│       └── theme.ts
-├── assets/               # Images, fonts, etc.
-├── App.tsx              # Root component
-└── package.json
-```
-
-## 🎨 Customization
-
-### Theme
-
-Edit `src/styles/theme.ts` to customize colors, typography, and spacing.
-
-### Myanmar Fonts
-
-1. Add your Myanmar font files to `assets/fonts/`
-2. Update `src/styles/theme.ts` with the font family name
-3. Load fonts in `App.tsx` using `expo-font`
+---
 
 ## 🐛 Troubleshooting
 
-### Database Issues
+### Bible Data Not Loading
 
-If the Bible data isn't loading:
-1. Clear app data
-2. Uninstall and reinstall the app
-3. Check console logs for errors
+1. Clear app data and restart
+2. Check console logs for errors
+3. Verify SQLite database initialization
+4. Ensure XML file is properly formatted
 
-### Firebase Connection
+### Firebase Connection Issues
 
-If hymns/bulletins aren't loading:
 1. Verify Firebase config in `src/config/firebase.ts`
-2. Check Firestore rules
-3. Ensure internet connection for first load
+2. Check internet connection
+3. Ensure Firestore rules allow read access
+4. Check Firebase Console for quota limits
 
-## 📝 TODO
+### Dark Mode Not Working
 
-- [ ] Add Bible search functionality
-- [ ] Implement bookmarks and highlights
-- [ ] Add dark mode support
-- [ ] Offline hymn caching
-- [ ] Push notifications for bulletins
-- [ ] User authentication
-- [ ] Favorite hymns
+1. Clear AsyncStorage: Settings → Clear App Data
+2. Restart the app
+3. Toggle theme manually from any screen header
+
+---
+
+## 🚀 Deployment
+
+### Building for Production
+
+```bash
+# Android APK
+eas build --platform android --profile production
+
+# iOS IPA
+eas build --platform ios --profile production
+
+# Both platforms
+eas build --platform all --profile production
+```
+
+### OTA Updates
+
+Over-the-air updates allow you to push JavaScript changes without app store approval:
+
+```bash
+# Publish update
+eas update --branch production --message "Bug fixes"
+```
+
+---
+
+## 📊 Current Status
+
+### ✅ Completed Features
+- [x] Multi-language Bible (Myanmar & Hakha)
+- [x] Bible search with keyword highlighting
+- [x] Bookmark system with notes
+- [x] Hymn collection with search
+- [x] Bulletin board with categories
+- [x] User authentication
+- [x] Admin dashboard
+- [x] Dark mode (3 themes)
+- [x] Offline-first architecture
+
+### 🚧 In Progress
+- [ ] OTA Updates implementation
+- [ ] Logo upload feature
+- [ ] Push notifications
+
+### 📋 Planned Features
+- [ ] Bible highlights with colors
+- [ ] Hymn favorites
+- [ ] Export bookmarks
+- [ ] Multi-device sync
+- [ ] App analytics
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
 
 ## 📄 License
 
-MIT License - feel free to use this for your church!
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Credits
+---
 
-Built with ❤️ for Myanmar churches
+## 🙏 Acknowledgments
+
+- Built with ❤️ for Myanmar churches
+- Bible translations: Myanmar Bible Society
+- Hakha Chin translation: Hakha Chin Christian community
+- Icons: Expo vector-icons
+- UI inspiration: Modern mobile design patterns
+
+---
+
+## 📞 Support
+
+For support, email [your-email@example.com] or open an issue in this repository.
+
+---
+
+<div align="center">
+
+**Made with ❤️ by [Joseph](https://github.com/Joseph1997-eng)**
+
+⭐ Star this repo if you find it helpful!
+
+</div>
