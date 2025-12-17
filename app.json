@@ -29,6 +29,19 @@
     "plugins": [
       "expo-sqlite",
       "expo-font"
-    ]
+    ],
+    "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "church-mate-v2"
+      }
+    }
   }
 }

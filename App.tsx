@@ -9,6 +9,7 @@ import { ThemeProvider } from './src/contexts/ThemeContext';
 import ErrorBoundary from './src/components/ErrorBoundary';
 import BibleDatabase from './src/database/BibleDatabase';
 import { isFirstLaunch, setFirstLaunchComplete } from './src/utils/firstLaunch';
+import UpdateService from './src/services/UpdateService';
 import { theme } from './src/styles/theme';
 
 export default function App() {
@@ -45,6 +46,16 @@ export default function App() {
         }
 
         await setFirstLaunchComplete();
+      }
+
+      // Check for OTA updates
+      setLoadingMessage('Checking for updates...');
+      try {
+        UpdateService.logUpdateStatus();
+        await UpdateService.checkAndPromptUpdate();
+      } catch (error) {
+        console.error('Update check error:', error);
+        // Don't block app launch if update check fails
       }
 
       setLoadingMessage('Loading app...');
