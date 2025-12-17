@@ -1,14 +1,52 @@
 # Church Mate - React Native Mobile App
 
-A mobile application for Myanmar churches featuring offline Bible reading, real-time hymn search, and church bulletin functionality.
+# Church Mate - Mobile Companion App
 
-## 🚀 Features
+A comprehensive offline-first mobile application for church members, built with React Native and Expo.
 
-- **📖 Offline Bible Reader**: Fast, offline-first Bible reading with book/chapter navigation
-- **🎵 Hymn Search**: Real-time hymn search with Firebase Firestore and offline persistence
-- **📰 Church Bulletin**: Weekly announcements and events from your church
-- **🌐 Myanmar Font Support**: Proper rendering of Myanmar/Hakha text
-- **📱 Cross-Platform**: Works on iOS, Android, and Web
+## 🎯 Overview
+
+Church Mate is a feature-rich mobile application designed to enhance the spiritual life of church members by providing easy access to:
+- **Multi-language Bible** (Myanmar & Hakha Chin)
+- **Hymn Collection** with search functionality
+- **Church Bulletins** and announcements
+- **User Profiles** with authentication
+- **Admin Dashboard** for church management
+- **Dark Mode** support for comfortable reading
+
+## ✨ Key Features
+
+### 📖 Bible Module
+- **Dual Language Support**: Myanmar and Hakha Chin translations
+- **Offline Access**: Full Bible stored locally in SQLite
+- **Search Functionality**: Find verses by keyword with highlighting
+- **Bookmarks**: Save and manage favorite verses
+- **Chapter Navigation**: Easy book and chapter selection
+- **Verse Highlighting**: Visual emphasis on search results
+
+### 🎵 Hymn Collection
+- **Searchable Database**: Find hymns by title or number
+- **Offline Storage**: Access hymns without internet
+- **Firebase Sync**: Cloud backup and sync across devices
+- **Admin Management**: Add and edit hymns through admin panel
+
+### 📰 Bulletin Board
+- **Church Announcements**: Stay updated with church news
+- **Categorized Posts**: Events, prayers, announcements
+- **Priority Levels**: Important notices highlighted
+- **Real-time Updates**: Instant notifications of new bulletins
+
+### 👤 User Management
+- **Firebase Authentication**: Secure email/password login
+- **User Profiles**: Manage personal information
+- **Role-Based Access**: Admin and regular user permissions
+- **Profile Pictures**: Personalize your account
+
+### 🎨 Dark Mode
+- **3 Theme Modes**: Light, Dark, and System auto-detect
+- **Persistent Preference**: Remembers your choice
+- **Complete Coverage**: All screens support dark mode
+- **Smooth Transitions**: Instant theme switching
 
 ## 🛠️ Tech Stack
 
