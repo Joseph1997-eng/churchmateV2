@@ -172,7 +172,104 @@ npx expo start
 
 ---
 
-## 📱 Usage
+## � Download APK
+
+### For End Users
+
+If you just want to use the app without setting up the development environment:
+
+#### Option 1: Download Pre-built APK (Recommended)
+
+**Coming Soon**: Production APK will be available for download
+
+#### Option 2: Build Your Own APK
+
+1. **Install EAS CLI**
+```bash
+npm install -g eas-cli
+```
+
+2. **Login to Expo**
+```bash
+eas login
+```
+
+3. **Configure EAS Build**
+```bash
+eas build:configure
+```
+
+4. **Build APK**
+```bash
+# For production APK
+eas build --platform android --profile production
+
+# For development APK (with Expo Go)
+eas build --platform android --profile development
+```
+
+5. **Download APK**
+   - After build completes, you'll get a download link
+   - Download the APK file
+   - Transfer to your Android device
+   - Install the APK (enable "Install from Unknown Sources" if needed)
+
+#### Build Profiles
+
+Create `eas.json` in project root:
+
+```json
+{
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  }
+}
+```
+
+#### APK Installation Steps
+
+1. **Enable Unknown Sources**
+   - Go to Settings → Security
+   - Enable "Install from Unknown Sources"
+   - Or allow installation for your file manager app
+
+2. **Install APK**
+   - Open the downloaded APK file
+   - Tap "Install"
+   - Wait for installation to complete
+
+3. **Launch App**
+   - Find "Church Mate" in your app drawer
+   - Tap to open
+   - Create account or sign in
+
+#### System Requirements
+
+- **Android**: 5.0 (Lollipop) or higher
+- **Storage**: ~50 MB for app + Bible data
+- **RAM**: 2 GB minimum recommended
+- **Internet**: Required for first-time setup and Firebase features
+
+---
+
+## �📱 Usage
 
 ### First Launch
 
@@ -460,7 +557,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-For support, email [your-email@example.com] or open an issue in this repository.
+For support, questions, or feedback:
+- **Email**: [josephsaimonn@gmail.com](mailto:josephsaimonn@gmail.com)
+- **Issues**: Open an issue in this repository
+- **Discussions**: Use GitHub Discussions for general questions
 
 ---
 
