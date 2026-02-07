@@ -4,7 +4,7 @@
 
 ![Church Mate](https://img.shields.io/badge/Platform-React%20Native-blue)
 ![Expo SDK](https://img.shields.io/badge/Expo-SDK%2054-000020?logo=expo)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178C6?logo=typescript)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)
 ![Firebase](https://img.shields.io/badge/Firebase-Firestore-FFCA28?logo=firebase)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
@@ -100,8 +100,8 @@ Church Mate is a feature-rich React Native mobile application built specifically
 
 ### Frontend
 - **Framework**: React Native with Expo SDK 54
-- **Language**: TypeScript 5.3
-- **Navigation**: React Navigation v6 (Bottom Tabs + Stack)
+- **Language**: TypeScript 5.9
+- **Navigation**: React Navigation v7 (Bottom Tabs + Stack)
 - **State Management**: React Context API
 - **UI Components**: Custom components with theme system
 
@@ -114,7 +114,7 @@ Church Mate is a feature-rich React Native mobile application built specifically
 ### Development Tools
 - **Build Tool**: Expo CLI
 - **Version Control**: Git & GitHub
-- **Code Quality**: TypeScript strict mode
+- **Code Quality**: TypeScript strict mode + Jest unit tests
 - **Package Manager**: npm
 
 ---
@@ -172,7 +172,7 @@ npx expo start
 
 ---
 
-## � Download APK
+## 📦 Download APK
 
 ### For End Users
 
@@ -198,6 +198,38 @@ eas login
 ```bash
 eas build:configure
 ```
+
+4. **Build for Android**
+```bash
+eas build -p android
+```
+
+5. **Build for iOS (macOS required)**
+```bash
+eas build -p ios
+```
+
+## 🧪 Testing
+
+```bash
+npm test
+```
+
+## 🔒 Firestore Security
+
+- Firestore rules are defined in `firestore.rules`.
+- Deploy with the Firebase CLI:
+
+```bash
+firebase deploy --only firestore:rules
+```
+
+## 💡 Recommended Next Features
+
+- Animated splash screen sequence with Expo Splash Screen.
+- Advanced pagination for search (Bible + Hymns) with server-side indexing.
+- User-selectable font sizes and reading modes.
+- Push notifications for bulletin updates.
 
 4. **Build APK**
 ```bash

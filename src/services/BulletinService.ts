@@ -8,9 +8,12 @@ import {
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { BulletinItem } from '../types';
+import { getCachedData, setCachedData } from '../utils/cache';
 
 class BulletinService {
     private bulletinCollection = collection(db, 'bulletins');
+    private readonly cacheKey = 'bulletins:week';
+    private readonly cacheTTL = 1000 * 60 * 30; // 30 minutes
 
     /**
      * Get all bulletin items
@@ -50,7 +53,7 @@ class BulletinService {
 
             const querySnapshot = await getDocs(q);
 
-            return querySnapshot.docs.map(doc => {
+            const bulletins = querySnapshot.docs.map(doc => {
                 const data = doc.data();
                 return {
                     id: doc.id,
@@ -58,8 +61,14 @@ class BulletinService {
                     date: data.date instanceof Timestamp ? data.date.toDate() : new Date(data.date)
                 } as BulletinItem;
             });
+            await setCachedData(this.cacheKey, bulletins, this.cacheTTL);
+            return bulletins;
         } catch (error) {
             console.error('Error fetching current week bulletins:', error);
+            const cached = await getCachedData<BulletinItem[]>(this.cacheKey);
+            if (cached) {
+                return cached;
+            }
             throw error;
         }
     }

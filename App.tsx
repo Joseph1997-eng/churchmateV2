@@ -76,13 +76,6 @@ export default function App() {
   };
 
   const seedSampleData = async () => {
-    // Sample data for testing - replace with actual XML parsing
-    const sampleBooks = [
-      { id: 1, name: 'Genesis', chapters: 50 },
-      { id: 2, name: 'Exodus', chapters: 40 },
-      { id: 3, name: 'Matthew', chapters: 28 },
-      { id: 4, name: 'John', chapters: 21 },
-    ];
     try {
       setLoadingMessage('Importing Myanmar Bible...');
 

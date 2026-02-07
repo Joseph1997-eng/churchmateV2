@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     View,
     Text,
-    ScrollView,
     StyleSheet,
     ActivityIndicator,
     RefreshControl,
+    FlatList,
+    useWindowDimensions,
 } from 'react-native';
 import BulletinService from '../services/BulletinService';
 import { BulletinItem } from '../types';
@@ -15,6 +16,7 @@ import { useTheme } from '../contexts/ThemeContext';
 
 export default function BulletinBoard() {
     const { colors } = useTheme();
+    const { width } = useWindowDimensions();
     const [bulletins, setBulletins] = useState<BulletinItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -23,7 +25,7 @@ export default function BulletinBoard() {
         loadBulletins();
     }, []);
 
-    const loadBulletins = async () => {
+    const loadBulletins = useCallback(async () => {
         try {
             setLoading(true);
             const bulletinsData = await BulletinService.getCurrentWeekBulletins();
@@ -33,15 +35,15 @@ export default function BulletinBoard() {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
-    const onRefresh = async () => {
+    const onRefresh = useCallback(async () => {
         setRefreshing(true);
         await loadBulletins();
         setRefreshing(false);
-    };
+    }, [loadBulletins]);
 
-    const getCategoryIcon = (category: BulletinItem['category']) => {
+    const getCategoryIcon = useCallback((category: BulletinItem['category']) => {
         switch (category) {
             case 'announcement':
                 return 'megaphone-outline';
@@ -52,44 +54,51 @@ export default function BulletinBoard() {
             default:
                 return 'information-circle-outline';
         }
-    };
+    }, []);
 
-    const getCategoryColor = (category: BulletinItem['category']) => {
+    const getCategoryColor = useCallback((category: BulletinItem['category']) => {
         switch (category) {
             case 'announcement':
-                return theme.colors.primary;
+                return colors.primary;
             case 'event':
-                return theme.colors.success;
+                return colors.success;
             case 'prayer':
                 return '#E91E63';
             default:
-                return theme.colors.textSecondary;
+                return colors.textSecondary;
         }
-    };
+    }, [colors]);
 
-    const getPriorityBadge = (priority?: BulletinItem['priority']) => {
+    const getPriorityBadge = useCallback((priority?: BulletinItem['priority']) => {
         if (!priority || priority === 'low') return null;
 
         return (
             <View style={[
                 styles.priorityBadge,
-                { backgroundColor: priority === 'high' ? theme.colors.error : '#FF9800' }
+                { backgroundColor: priority === 'high' ? colors.error : '#FF9800' }
             ]}>
                 <Text style={styles.priorityText}>
                     {priority === 'high' ? 'URGENT' : 'IMPORTANT'}
                 </Text>
             </View>
         );
-    };
+    }, []);
 
-    const formatDate = (date: Date) => {
+    const formatDate = useCallback((date: Date) => {
         const options: Intl.DateTimeFormatOptions = {
             month: 'short',
             day: 'numeric',
             year: 'numeric'
         };
         return date.toLocaleDateString('en-US', options);
-    };
+    }, []);
+
+    const headerDate = useMemo(
+        () => new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+        []
+    );
+
+    const cardWidth = Math.min(width - theme.spacing.md * 2, 720);
 
     if (loading) {
         return (
@@ -99,54 +108,53 @@ export default function BulletinBoard() {
         );
     }
 
-    return (
-        <ScrollView
-            style={[styles.container, { backgroundColor: colors.background }]}
-            contentContainerStyle={styles.contentContainer}
-            refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-        >
-            <View style={[styles.header, { backgroundColor: colors.surface }]}>
-                <Text style={[styles.headerTitle, { color: colors.text }]}>This Week's Bulletin</Text>
-                <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>
-                    {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                </Text>
+    const renderItem = ({ item }: { item: BulletinItem }) => (
+        <View style={[styles.bulletinCard, { backgroundColor: colors.surface, width: cardWidth }]}>
+            <View style={styles.bulletinHeader}>
+                <View style={styles.categoryContainer}>
+                    <Ionicons
+                        name={getCategoryIcon(item.category) as any}
+                        size={24}
+                        color={getCategoryColor(item.category)}
+                    />
+                    <Text style={[styles.categoryText, { color: getCategoryColor(item.category) }]}>
+                        {item.category?.toUpperCase() || 'GENERAL'}
+                    </Text>
+                </View>
+                {getPriorityBadge(item.priority)}
             </View>
 
-            {bulletins.length === 0 ? (
+            <Text style={[styles.bulletinTitle, { color: colors.text }]}>{item.title}</Text>
+            <Text style={[styles.bulletinDescription, { color: colors.textSecondary }]}>{item.description}</Text>
+
+            <View style={styles.bulletinFooter}>
+                <Ionicons name="time-outline" size={16} color={colors.textSecondary} />
+                <Text style={[styles.bulletinDate, { color: colors.textSecondary }]}>{formatDate(item.date)}</Text>
+            </View>
+        </View>
+    );
+
+    return (
+        <FlatList
+            style={[styles.container, { backgroundColor: colors.background }]}
+            contentContainerStyle={styles.contentContainer}
+            data={bulletins}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            ListHeaderComponent={
+                <View style={[styles.header, { backgroundColor: colors.surface }]}>
+                    <Text style={[styles.headerTitle, { color: colors.text }]}>This Week's Bulletin</Text>
+                    <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>{headerDate}</Text>
+                </View>
+            }
+            ListEmptyComponent={
                 <View style={styles.emptyContainer}>
                     <Ionicons name="document-text-outline" size={64} color={colors.textSecondary} />
                     <Text style={[styles.emptyText, { color: colors.textSecondary }]}>No bulletins this week</Text>
                 </View>
-            ) : (
-                bulletins.map(bulletin => (
-                    <View key={bulletin.id} style={[styles.bulletinCard, { backgroundColor: colors.surface }]}>
-                        <View style={styles.bulletinHeader}>
-                            <View style={styles.categoryContainer}>
-                                <Ionicons
-                                    name={getCategoryIcon(bulletin.category) as any}
-                                    size={24}
-                                    color={getCategoryColor(bulletin.category)}
-                                />
-                                <Text style={[styles.categoryText, { color: getCategoryColor(bulletin.category) }]}>
-                                    {bulletin.category?.toUpperCase() || 'GENERAL'}
-                                </Text>
-                            </View>
-                            {getPriorityBadge(bulletin.priority)}
-                        </View>
-
-                        <Text style={[styles.bulletinTitle, { color: colors.text }]}>{bulletin.title}</Text>
-                        <Text style={[styles.bulletinDescription, { color: colors.textSecondary }]}>{bulletin.description}</Text>
-
-                        <View style={styles.bulletinFooter}>
-                            <Ionicons name="time-outline" size={16} color={colors.textSecondary} />
-                            <Text style={[styles.bulletinDate, { color: colors.textSecondary }]}>{formatDate(bulletin.date)}</Text>
-                        </View>
-                    </View>
-                ))
-            )}
-        </ScrollView>
+            }
+        />
     );
 }
 
