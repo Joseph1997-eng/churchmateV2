@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     View,
     Text,
@@ -9,6 +9,7 @@ import {
     ActivityIndicator,
     Modal,
     ScrollView,
+    useWindowDimensions,
 } from 'react-native';
 import HymnService from '../services/HymnService';
 import { Hymn } from '../types';
@@ -16,58 +17,71 @@ import { theme } from '../styles/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
 
+const PAGE_SIZE = 30;
+
 export default function HymnList() {
     const { colors } = useTheme();
+    const { width } = useWindowDimensions();
     const [hymns, setHymns] = useState<Hymn[]>([]);
-    const [filteredHymns, setFilteredHymns] = useState<Hymn[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(true);
     const [selectedHymn, setSelectedHymn] = useState<Hymn | null>(null);
     const [modalVisible, setModalVisible] = useState(false);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         loadHymns();
     }, []);
 
     useEffect(() => {
-        filterHymns();
+        setPage(1);
     }, [searchQuery, hymns]);
 
-    const loadHymns = async () => {
+    const loadHymns = useCallback(async () => {
         try {
             setLoading(true);
             const hymnsData = await HymnService.getAllHymns();
             setHymns(hymnsData);
-            setFilteredHymns(hymnsData);
         } catch (error) {
             console.error('Error loading hymns:', error);
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
-    const filterHymns = () => {
+    const filteredHymns = useMemo(() => {
         if (!searchQuery.trim()) {
-            setFilteredHymns(hymns);
-            return;
+            return hymns;
         }
 
         const query = searchQuery.toLowerCase();
-        const filtered = hymns.filter(
+        return hymns.filter(
             hymn =>
                 hymn.title.toLowerCase().includes(query) ||
                 hymn.number.toString().includes(query) ||
                 hymn.lyrics.toLowerCase().includes(query)
         );
-        setFilteredHymns(filtered);
-    };
+    }, [hymns, searchQuery]);
 
-    const openHymnModal = (hymn: Hymn) => {
+    const visibleHymns = useMemo(
+        () => filteredHymns.slice(0, page * PAGE_SIZE),
+        [filteredHymns, page]
+    );
+
+    const canLoadMore = visibleHymns.length < filteredHymns.length;
+
+    const openHymnModal = useCallback((hymn: Hymn) => {
         setSelectedHymn(hymn);
         setModalVisible(true);
-    };
+    }, []);
 
-    const renderHymnItem = ({ item }: { item: Hymn }) => (
+    const handleLoadMore = useCallback(() => {
+        if (canLoadMore) {
+            setPage(prev => prev + 1);
+        }
+    }, [canLoadMore]);
+
+    const renderHymnItem = useCallback(({ item }: { item: Hymn }) => (
         <TouchableOpacity
             style={[styles.hymnItem, { backgroundColor: colors.surface }]}
             onPress={() => openHymnModal(item)}
@@ -85,7 +99,7 @@ export default function HymnList() {
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
         </TouchableOpacity>
-    );
+    ), [colors, openHymnModal]);
 
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -111,10 +125,10 @@ export default function HymnList() {
                 <ActivityIndicator size="large" color={colors.primary} style={styles.loader} />
             ) : (
                 <FlatList
-                    data={filteredHymns}
+                    data={visibleHymns}
                     renderItem={renderHymnItem}
                     keyExtractor={item => item.id}
-                    contentContainerStyle={styles.listContainer}
+                    contentContainerStyle={[styles.listContainer, { paddingHorizontal: width > 600 ? theme.spacing.xl : theme.spacing.md }]}
                     ListEmptyComponent={
                         <View style={styles.emptyContainer}>
                             <Ionicons name="musical-notes-outline" size={64} color={colors.textSecondary} />
@@ -122,6 +136,11 @@ export default function HymnList() {
                             <Text style={[styles.emptySubtext, { color: colors.textSecondary }]}>Add hymns to Firebase Firestore</Text>
                         </View>
                     }
+                    onEndReached={handleLoadMore}
+                    onEndReachedThreshold={0.4}
+                    initialNumToRender={PAGE_SIZE}
+                    maxToRenderPerBatch={PAGE_SIZE}
+                    windowSize={10}
                 />
             )}
 

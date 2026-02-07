@@ -1,14 +1,7 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TouchableOpacity, View, Text, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import BibleNavigator from './BibleNavigator';
-import HymnScreen from '../screens/HymnScreen';
-import BulletinScreen from '../screens/BulletinScreen';
-import ProfileScreen from '../screens/auth/ProfileScreen';
-import BookmarksScreen from '../screens/bible/BookmarksScreen';
-import ThemeSettingsScreen from '../screens/settings/ThemeSettingsScreen';
-import AdminNavigator from './AdminNavigator';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { theme } from '../styles/theme';
@@ -18,42 +11,40 @@ const Tab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
     const { isAdmin } = useAuth();
     const { colors } = useTheme();
+    const screenOptions = useMemo(() => ({
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
+        tabBarStyle: {
+            backgroundColor: colors.surface,
+            borderTopColor: colors.border,
+            borderTopWidth: 1,
+            paddingBottom: 8,
+            paddingTop: 8,
+            height: 60,
+        },
+        headerStyle: {
+            backgroundColor: colors.surface,
+        },
+        headerTintColor: colors.text,
+        headerRight: () => <ThemeToggleButton />,
+        tabBarLabelStyle: {
+            fontSize: theme.typography.fontSize.sm,
+            fontWeight: theme.typography.fontWeight.medium,
+        },
+        headerTitleStyle: {
+            fontWeight: theme.typography.fontWeight.bold,
+            fontSize: theme.typography.fontSize.lg,
+        },
+    }), [colors]);
 
     return (
         <Tab.Navigator
-            screenOptions={{
-                tabBarActiveTintColor: colors.primary,
-                tabBarInactiveTintColor: colors.textSecondary,
-                tabBarStyle: {
-                    backgroundColor: colors.surface,
-                    borderTopColor: colors.border,
-                    borderTopWidth: 1,
-                    paddingBottom: 8,
-                    paddingTop: 8,
-                    height: 60,
-                },
-                headerStyle: {
-                    backgroundColor: colors.surface,
-                },
-                headerTintColor: colors.text,
-                headerRight: () => <ThemeToggleButton />,
-                tabBarLabelStyle: {
-                    fontSize: theme.typography.fontSize.sm,
-                    fontWeight: theme.typography.fontWeight.medium,
-                },
-                headerStyle: {
-                    backgroundColor: theme.colors.primary,
-                },
-                headerTintColor: '#FFFFFF',
-                headerTitleStyle: {
-                    fontWeight: theme.typography.fontWeight.bold,
-                    fontSize: theme.typography.fontSize.lg,
-                },
-            }}
+            screenOptions={screenOptions}
+            lazy
         >
             <Tab.Screen
                 name="Bible"
-                component={BibleNavigator}
+                getComponent={() => require('./BibleNavigator').default}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="book" size={size} color={color} />
@@ -63,7 +54,7 @@ export default function BottomTabNavigator() {
             />
             <Tab.Screen
                 name="Bookmarks"
-                component={BookmarksScreen}
+                getComponent={() => require('../screens/bible/BookmarksScreen').default}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="bookmark" size={size} color={color} />
@@ -73,7 +64,7 @@ export default function BottomTabNavigator() {
             />
             <Tab.Screen
                 name="Hymns"
-                component={HymnScreen}
+                getComponent={() => require('../screens/HymnScreen').default}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="musical-notes" size={size} color={color} />
@@ -83,7 +74,7 @@ export default function BottomTabNavigator() {
             />
             <Tab.Screen
                 name="Bulletin"
-                component={BulletinScreen}
+                getComponent={() => require('../screens/BulletinScreen').default}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="newspaper" size={size} color={color} />
@@ -93,7 +84,7 @@ export default function BottomTabNavigator() {
             />
             <Tab.Screen
                 name="Profile"
-                component={ProfileScreen}
+                getComponent={() => require('../screens/auth/ProfileScreen').default}
                 options={{
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="person" size={size} color={color} />
@@ -105,7 +96,7 @@ export default function BottomTabNavigator() {
             {isAdmin && (
                 <Tab.Screen
                     name="Admin"
-                    component={AdminNavigator}
+                    getComponent={() => require('./AdminNavigator').default}
                     options={{
                         tabBarIcon: ({ color, size }) => (
                             <Ionicons name="shield-checkmark" size={size} color={color} />

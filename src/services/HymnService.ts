@@ -11,9 +11,12 @@ import {
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Hymn } from '../types';
+import { getCachedData, setCachedData } from '../utils/cache';
 
 class HymnService {
     private hymnsCollection = collection(db, 'hymns');
+    private readonly cacheKey = 'hymns:all';
+    private readonly cacheTTL = 1000 * 60 * 60 * 6; // 6 hours
 
     /**
      * Get all hymns
@@ -23,12 +26,19 @@ class HymnService {
             const q = query(this.hymnsCollection, orderBy('number', 'asc'));
             const querySnapshot = await getDocs(q);
 
-            return querySnapshot.docs.map(doc => ({
+            const hymns = querySnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
             } as Hymn));
+
+            await setCachedData(this.cacheKey, hymns, this.cacheTTL);
+            return hymns;
         } catch (error) {
             console.error('Error fetching hymns:', error);
+            const cached = await getCachedData<Hymn[]>(this.cacheKey);
+            if (cached) {
+                return cached;
+            }
             throw error;
         }
     }

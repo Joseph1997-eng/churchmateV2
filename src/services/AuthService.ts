@@ -1,11 +1,8 @@
-import { initializeApp } from 'firebase/app';
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut as firebaseSignOut,
-    updateProfile as firebaseUpdateProfile,
-    User as FirebaseUser,
-    onAuthStateChanged
+    updateProfile as firebaseUpdateProfile
 } from 'firebase/auth';
 import {
     doc,
@@ -18,6 +15,7 @@ import {
 } from 'firebase/firestore';
 import { User } from '../types';
 import { auth, db } from '../config/firebase';
+import { getFirebaseErrorMessage } from '../utils/firebaseErrors';
 
 class AuthService {
     /**
@@ -51,7 +49,7 @@ class AuthService {
             return userData;
         } catch (error: any) {
             console.error('Sign up error:', error);
-            throw new Error(error.message || 'Failed to sign up');
+            throw new Error(getFirebaseErrorMessage(error, 'Failed to sign up'));
         }
     }
 
@@ -78,7 +76,7 @@ class AuthService {
             } as User;
         } catch (error: any) {
             console.error('Sign in error:', error);
-            throw new Error(error.message || 'Failed to sign in');
+            throw new Error(getFirebaseErrorMessage(error, 'Failed to sign in'));
         }
     }
 
@@ -90,7 +88,7 @@ class AuthService {
             await firebaseSignOut(auth);
         } catch (error: any) {
             console.error('Sign out error:', error);
-            throw new Error(error.message || 'Failed to sign out');
+            throw new Error(getFirebaseErrorMessage(error, 'Failed to sign out'));
         }
     }
 
@@ -143,7 +141,7 @@ class AuthService {
             }
         } catch (error: any) {
             console.error('Update profile error:', error);
-            throw new Error(error.message || 'Failed to update profile');
+            throw new Error(getFirebaseErrorMessage(error, 'Failed to update profile'));
         }
     }
 
@@ -185,7 +183,7 @@ class AuthService {
             );
         } catch (error: any) {
             console.error('Promote to admin error:', error);
-            throw new Error(error.message || 'Failed to promote user');
+            throw new Error(getFirebaseErrorMessage(error, 'Failed to promote user'));
         }
     }
 
@@ -214,7 +212,7 @@ class AuthService {
             );
         } catch (error: any) {
             console.error('Demote to user error:', error);
-            throw new Error(error.message || 'Failed to demote user');
+            throw new Error(getFirebaseErrorMessage(error, 'Failed to demote user'));
         }
     }
 
